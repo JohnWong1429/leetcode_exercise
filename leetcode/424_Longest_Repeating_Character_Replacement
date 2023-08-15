@@ -1,0 +1,64 @@
+// var characterReplacement = function(s, k) {
+//     let map = new Map();
+//     let longest = 0;
+//     let left =0;
+//     let right =0;
+
+//     while(right < s.length){
+//         if(k){
+//             if(map.has(s[right])){
+//                 map.set(s[right],map.get(s[right])+1);
+//             } else{
+//                 map.set(s[right],1);
+//             }
+//             while(map.size > k){
+//                 map.set(s[left], map.get(s[left])-1);
+//                 if(map.get(s[left])==0){
+//                     map.delete(s[left]);
+//                 }
+//                 left++;
+//             }
+//             console.log(map);
+//             longest = Math.max(longest, right-left+1)
+//             right++;
+//         }
+//     }
+//     return longest;
+// };
+
+var characterReplacement = function(s, k) {
+    if (s.length === 0) {
+        return 0;
+    }
+    let map = new Map();
+    let longest = 0;
+    let left = 0;
+    let right = 0;
+    let maxCount = 0;
+
+    while (right < s.length) {
+        map.set(s[right], (map.get(s[right]) || 0) + 1);
+        maxCount = Math.max(maxCount, map.get(s[right]));
+
+        if (right - left + 1 - maxCount > k) {
+            map.set(s[left], map.get(s[left]) - 1);
+            left++;
+        }
+
+        longest = Math.max(longest, right - left + 1);
+        right++;
+    }
+    return k === 0 ? maxCount : longest;
+};
+
+let s1 = "ABAB", k1=2;   //4
+let s2 = 'AABABBA', k2=0;//2
+let s3 = 'ABBB', k3=2;//4
+let s4 = 'ABBBA',k4= 2;//5
+let s5 = "KRSCDCSONAJNHLBMDQGIFCPEKPOHQIHLTDIQGEKLRLCQNBOHNDQGHJPNDQPERNFSSSRDEQLFPCCCARFMDLHADJADAGNNSBNCJQOF", k5 = 4; //7
+
+console.log(characterReplacement(s1,k1)); //4
+console.log(characterReplacement(s2,k2));//4
+ console.log(characterReplacement(s3,k3));//4
+   console.log(characterReplacement(s4,k4));//5
+ console.log(characterReplacement(s5,k5));//7
